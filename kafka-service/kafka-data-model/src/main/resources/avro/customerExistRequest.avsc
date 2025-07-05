@@ -1,0 +1,13 @@
+{
+  "namespace": "com.udb.m2.gl.kafka.avro.model",
+  "type": "record",
+  "name": "CustomerExistRequestAvroModel",
+  "fields": [
+    {
+      "name": "clientId",
+      "type": {
+        "type": "string"
+      }
+    }
+  ]
+}
