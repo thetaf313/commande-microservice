@@ -38,6 +38,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.udb.m2.gl</groupId>
+            <artifactId>kafka-producer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.udb.m2.gl</groupId>
+            <artifactId>kafka-consumer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.udb.m2.gl</groupId>
+            <artifactId>kafka-data-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.udb.m2.gl</groupId>
+            <artifactId>common-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.udb.m2.gl</groupId>
+            <artifactId>kafka-data-config</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

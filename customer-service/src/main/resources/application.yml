@@ -55,9 +55,9 @@ spring:
     name: customer-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url:  jdbc:postgresql://localhost:5432/my-customer-service
+    url:  jdbc:postgresql://localhost:5432/customer_service
     username: postgres
-    password: passer
+    password: password123
   jpa:
     hibernate:
       ddl-auto: update
