@@ -5,8 +5,10 @@ import com.udb.m2.gl.dto.*;
 import com.udb.m2.gl.helper.CompteHelper;
 import com.udb.m2.gl.messaging.CustomerKafkaListener;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 //@CrossOrigin
@@ -26,12 +28,12 @@ public class CompteController {
     }
 
     @PostMapping
-    public void createCompte(@RequestBody CompteCreateRequest compteCreateRequest) throws InterruptedException {
+    public ResponseEntity<Map<String, String>> createCompte(@RequestBody CompteCreateRequest compteCreateRequest) throws InterruptedException {
         customerResponseKafkaListener.initCompteCreateRequest(compteCreateRequest);
-        compteHelper.createCompte(compteCreateRequest);
+        return compteHelper.createCompte(compteCreateRequest);
     }
 
-    @PostMapping("/tracking/{trackingId}")
+    @GetMapping("/tracking/{trackingId}")
     public TrackingResponse trackingCreateCompte(@PathVariable UUID trackingId) {
         return compteHelper.trackingCompte(trackingId);
     }

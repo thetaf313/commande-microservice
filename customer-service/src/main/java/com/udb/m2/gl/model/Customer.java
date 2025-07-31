@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class Customer {
 
     @Id
+//    @Column(columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(length = 50)

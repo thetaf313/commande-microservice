@@ -2,7 +2,6 @@ package com.udb.m2.gl.service;
 
 import com.udb.m2.gl.model.Customer;
 import com.udb.m2.gl.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

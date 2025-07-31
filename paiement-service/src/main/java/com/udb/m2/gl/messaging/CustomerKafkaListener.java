@@ -1,6 +1,7 @@
 package com.udb.m2.gl.messaging;
 
 
+import com.udb.m2.gl.KafkaConsumer;
 import com.udb.m2.gl.dto.CompteCreateRequest;
 import com.udb.m2.gl.kafka.avro.model.CustomerCreateResponseAvroModel;
 import com.udb.m2.gl.kafka.avro.model.CustomerStatut;
@@ -9,7 +10,6 @@ import com.udb.m2.gl.model.Tracking;
 import com.udb.m2.gl.model.Transaction;
 import com.udb.m2.gl.service.CompteService;
 import com.udb.m2.gl.service.ITracking;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -71,6 +71,7 @@ public class CustomerKafkaListener implements KafkaConsumer<CustomerCreateRespon
             transaction.setMontant(compteCreateRequest.getMontant());
             transaction.setDemandeId(0);
             compte.setTransactions(List.of(transaction));
+            compte.setTracking(tracking);
             compteService.save(compte);
             tracking.setMessage("Le compte a ete cree avec succes !");
             tracking.setStatut("COMPLETED");
@@ -84,7 +85,6 @@ public class CustomerKafkaListener implements KafkaConsumer<CustomerCreateRespon
             tracking.setClientId(Long.parseLong(customerCreateResponseAvroModel.getClientId()));
         }
         trackingService.save(tracking);
-
     }
 
     public void setInitTrackingId(UUID id) {

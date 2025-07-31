@@ -16,8 +16,8 @@ import java.util.List;
 @Entity
 public class Compte {
     @Id
+//    @Column(columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
     private long id;
     @Column(length = 25)
     private String numeroCompte;

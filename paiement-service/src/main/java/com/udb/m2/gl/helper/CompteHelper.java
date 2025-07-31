@@ -13,10 +13,14 @@ import com.udb.m2.gl.model.Transaction;
 import com.udb.m2.gl.service.ICompte;
 import com.udb.m2.gl.service.ITracking;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -37,7 +41,7 @@ public class CompteHelper {
         this.customerKafkaListener = customerKafkaListener;
     }
 
-    public CompteCreateResponse createCompte(CompteCreateRequest compteCreateRequest){
+    public ResponseEntity<Map<String, String>> createCompte(CompteCreateRequest compteCreateRequest){
         if(compteCreateRequest.getMontant().compareTo(BigDecimal.valueOf(10000)) < 0){
             throw new CompteServiceException("montant initial ["+compteCreateRequest.getMontant()+"] doit être >= 10000");
         }
@@ -53,7 +57,15 @@ public class CompteHelper {
                         .getCustomerCreateRequest());
         KafkaEvent<CustomerCreateRequestAvroModel> createCustumerEvent = new KafkaEvent<>(customerCreateRequestAvroModel);
         kafkaService.createCustumer(createCustumerEvent);
-        return null;
+        String trackerUrl = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/compte/tracking/{trackingId}")
+                .buildAndExpand(tracking.getId())
+                .toUriString();
+        URI location = URI.create(trackerUrl);
+        Map<String, String> response = Map.of("trackingUrl", trackerUrl);
+        return ResponseEntity.created(location)
+                .body(response);
     }
 
     public CompteCreateResponse getCompteByClientId(long clientId){

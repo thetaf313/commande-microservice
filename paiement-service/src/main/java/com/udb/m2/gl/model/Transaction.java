@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @Entity
 public class Transaction {
     @Id
+//    @Column(columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
     private long id;
     private LocalDate date;
     private BigDecimal montant;

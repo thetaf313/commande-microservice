@@ -19,17 +19,18 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
-public class CustomerCreateRequestKafkaListener implements KafkaConsumer<CustomerCreateRequestAvroModel> {
-    private final Mapper mapper;
+public class CustomerCreateRequestKafkaListener /*implements KafkaConsumer<CustomerCreateRequestAvroModel>*/ {
+//    private final Mapper mapper;
     private final ICustomer iCustomer;
     private final MessageHelper<String, CustomerCreateResponseAvroModel> messageHelper;
     private final ConfigData configData;
     private final CustomerMapper customerMapper;
 
-    public CustomerCreateRequestKafkaListener(Mapper mapper, ICustomer iCustomer, MessageHelper<String, CustomerCreateResponseAvroModel> messageHelper, ConfigData configData, CustomerMapper customerMapper) {
-        this.mapper = mapper;
+    public CustomerCreateRequestKafkaListener(ICustomer iCustomer, MessageHelper<String, CustomerCreateResponseAvroModel> messageHelper, ConfigData configData, CustomerMapper customerMapper) {
         this.iCustomer = iCustomer;
         this.messageHelper = messageHelper;
         this.configData = configData;
@@ -37,14 +38,16 @@ public class CustomerCreateRequestKafkaListener implements KafkaConsumer<Custome
     }
 
 
-    @Override
+    //@Override
     @KafkaListener(id = "${kafka-consumer-config.customer-group-id}", topics = "${topics.customer-create-topic-request-name}")
-    public void receive(@Payload CustomerCreateRequestAvroModel message,
+    public void receive(@Payload List<CustomerCreateRequestAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_KEY) String key,
                         @Header(KafkaHeaders.RECEIVED_PARTITION) Integer partition,
                         @Header(KafkaHeaders.OFFSET) Long offset) {
-        log.info("Data {}, key {}, partition {}, offset {}", message, key, partition, offset);
-        createCustomer(message);
+        log.info("Data {}, key {}, partition {}, offset {}", messages, key, partition, offset);
+        for (CustomerCreateRequestAvroModel message : messages) {
+            createCustomer(message);
+        }
     }
 
     @Transactional
